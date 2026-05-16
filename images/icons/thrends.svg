@@ -1,0 +1,22 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="thrends-bg" x1="64" y1="48" x2="448" y2="464" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14172A"/>
+      <stop offset="0.55" stop-color="#5B21B6"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <linearGradient id="thrends-mark" x1="120" y1="136" x2="388" y2="396" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FAFC"/>
+      <stop offset="0.45" stop-color="#F97316"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+  <rect x="24" y="24" width="464" height="464" rx="118" fill="url(#thrends-bg)"/>
+  <rect x="48" y="48" width="416" height="416" rx="92" fill="rgba(255,255,255,0.04)"/>
+  <path d="M136 348C168 346 190 330 208 300C223 276 236 230 260 230C289 230 294 298 318 298C339 298 357 272 380 218" stroke="url(#thrends-mark)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M130 160H208C229 160 246 177 246 198V338C246 365 224 387 197 387H150C123 387 101 365 101 338V189C101 173 114 160 130 160Z" fill="url(#thrends-mark)" opacity="0.96"/>
+  <path d="M238 126H309C327 126 342 141 342 159V308C342 335 320 357 293 357H253C226 357 204 335 204 308V160C204 141 219 126 238 126Z" fill="#0B1020" opacity="0.95"/>
+  <circle cx="170" cy="197" r="34" fill="#F8FAFC"/>
+  <circle cx="280" cy="195" r="25" fill="#F8FAFC" opacity="0.93"/>
+  <path d="M121 364H373" stroke="rgba(255,255,255,0.22)" stroke-width="16" stroke-linecap="round"/>
+</svg>
