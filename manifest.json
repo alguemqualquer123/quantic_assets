@@ -173257,7 +173257,13 @@
           "size": 9505
         }
       ]
+    },
+    {
+      "name": ".gitignore",
+      "path": ".gitignore",
+      "type": "file",
+      "size": 26
     }
   ],
-  "generated_at": 1778898466.6602254
+  "generated_at": 1778899093.1865509
 }
