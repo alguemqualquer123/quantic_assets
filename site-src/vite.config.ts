@@ -4,7 +4,8 @@ import path from 'path'
 import fs from 'fs'
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/quantic_assets/' : './',
   plugins: [
     react(),
     {
@@ -59,11 +60,10 @@ export default defineConfig({
     }
   ],
   server: {
-      fs: {
-          allow: ['..']
-      }
+    fs: {
+      allow: ['..']
+    }
   },
-    base: './',
   build: {
     outDir: '../', // Build to repository root
     emptyOutDir: false, // CRITICAL: Do not delete existing files in root (images, etc)
@@ -80,4 +80,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-})
+}))

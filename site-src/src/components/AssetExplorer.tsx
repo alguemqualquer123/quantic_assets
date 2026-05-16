@@ -90,6 +90,7 @@ export const AssetExplorer: React.FC = () => {
   const [searchMode, setSearchMode] = useState<SearchMode>('recursive');
   const [copiedState, setCopiedState] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<{path: string, name: string} | null>(null);
+  const resolveAssetUrl = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath}`.replace(/\/{2,}/g, '/').replace(':/', '://');
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}manifest.json`)
@@ -471,7 +472,7 @@ export const AssetExplorer: React.FC = () => {
                     <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
                         {(isText || isMedia) && (
                             <a
-                                href={`/${file.path}`}
+                                href={resolveAssetUrl(file.path)}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="bg-black/80 hover:bg-red-600 text-white p-1.5 rounded-md shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center"
@@ -489,14 +490,14 @@ export const AssetExplorer: React.FC = () => {
                             {copiedState === copyNameId ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                         </button>
                         <button
-                            onClick={(e) => copyToClipboard(file.path, copyPathId, e)}
+                            onClick={(e) => copyToClipboard(new URL(resolveAssetUrl(file.path), window.location.origin).href, copyPathId, e)}
                             className="bg-black/80 hover:bg-red-600 text-white p-1.5 rounded-md shadow-lg backdrop-blur-sm transition-colors"
                             title="Copiar Caminho"
                         >
                             {copiedState === copyPathId ? <Check className="w-3.5 h-3.5" /> : <LinkIcon className="w-3.5 h-3.5" />}
                         </button>
                         <a
-                            href={`/${file.path}`}
+                            href={resolveAssetUrl(file.path)}
                             download
                             className="bg-black/80 hover:bg-red-600 text-white p-1.5 rounded-md shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center"
                             title="Baixar"
@@ -535,7 +536,7 @@ export const AssetExplorer: React.FC = () => {
                 onClick={(e) => e.stopPropagation()}
             >
                 <img
-                    src={`/${previewImage.path}`}
+                    src={resolveAssetUrl(previewImage.path)}
                     alt={previewImage.name}
                     className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
                 />
