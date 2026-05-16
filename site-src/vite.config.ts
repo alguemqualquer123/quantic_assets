@@ -63,6 +63,7 @@ export default defineConfig({
           allow: ['..']
       }
   },
+    base: './',
   build: {
     outDir: '../', // Build to repository root
     emptyOutDir: false, // CRITICAL: Do not delete existing files in root (images, etc)
