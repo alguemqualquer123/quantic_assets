@@ -92,7 +92,7 @@ export const AssetExplorer: React.FC = () => {
   const [previewImage, setPreviewImage] = useState<{path: string, name: string} | null>(null);
 
   useEffect(() => {
-    fetch('/manifest.json')
+    fetch(`${import.meta.env.BASE_URL}manifest.json`)
       .then(res => res.json())
       .then((data: Manifest) => {
         setManifest(data);
