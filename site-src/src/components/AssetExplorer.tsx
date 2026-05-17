@@ -15,7 +15,9 @@ import {
     Maximize2,
     SlidersHorizontal,
     SortAsc,
-    RefreshCw
+    RefreshCw,
+    Music,
+    Play
 } from 'lucide-react';
 
 
@@ -437,7 +439,7 @@ export const AssetExplorer: React.FC = () => {
                             onClick={() => setPreviewImage({path: file.path, name: file.name})}
                         >
                             <img
-                                src={`/${file.path}`}
+                                src={resolveAssetUrl(file.path)}
                                 alt={file.name}
                                 loading="lazy"
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -445,6 +447,13 @@ export const AssetExplorer: React.FC = () => {
                             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <Maximize2 className="text-white w-6 h-6 drop-shadow-md" />
                             </div>
+                        </div>
+                    ) : isMedia ? (
+                        <div className="w-full h-[170px] bg-zinc-950 rounded-lg flex flex-col items-center justify-center gap-3 text-zinc-700 border border-zinc-800/50 flex-shrink-0 p-4">
+                            <Music className="w-10 h-10 text-purple-400" />
+                            <audio controls className="w-full h-8">
+                                <source src={resolveAssetUrl(file.path)} />
+                            </audio>
                         </div>
                     ) : (
                         <div className="w-full h-[170px] bg-zinc-950 rounded-lg flex items-center justify-center text-zinc-700 border border-zinc-800/50 flex-shrink-0">
@@ -479,7 +488,7 @@ export const AssetExplorer: React.FC = () => {
                                 title={isMedia ? "Abrir stream" : "Abrir arquivo"}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <FileText className="w-3.5 h-3.5" />
+                                {isMedia ? <Play className="w-3.5 h-3.5" /> : <FileText className="w-3.5 h-3.5" />}
                             </a>
                         )}
                         <button
