@@ -17,7 +17,10 @@ import {
     SortAsc,
     RefreshCw,
     Music,
-    Play
+    Play,
+    List,
+    Grid3X3,
+    Filter
 } from 'lucide-react';
 
 
@@ -65,14 +68,18 @@ interface VisibleAssetNode extends AssetNode {
 type ViewMode = 'all' | 'folders' | 'images' | 'files';
 type SortMode = 'name' | 'size' | 'type';
 type SearchMode = 'current' | 'recursive';
+type DisplayMode = 'grid' | 'list';
+type PreviewType = 'image' | 'video' | 'audio' | null;
 
 const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
 const TEXT_EXTENSIONS = /\.(json|txt|csv|md|xml|yml|yaml|log|ini|toml)$/i;
-const MEDIA_EXTENSIONS = /\.(mp3|wav|ogg|m4a|mp4|webm|mov)$/i;
+const AUDIO_EXTENSIONS = /\.(mp3|wav|ogg|m4a)$/i;
+const VIDEO_EXTENSIONS = /\.(mp4|webm|mov|avi)$/i;
 
 const isImageFile = (name: string) => IMAGE_EXTENSIONS.test(name);
 const isTextFile = (name: string) => TEXT_EXTENSIONS.test(name);
-const isMediaFile = (name: string) => MEDIA_EXTENSIONS.test(name);
+const isAudioFile = (name: string) => AUDIO_EXTENSIONS.test(name);
+const isVideoFile = (name: string) => VIDEO_EXTENSIONS.test(name);
 
 const getFilePriority = (name: string) => {
     if (name.endsWith('.webp')) return 0;
@@ -91,7 +98,9 @@ export const AssetExplorer: React.FC = () => {
   const [sortMode, setSortMode] = useState<SortMode>('name');
   const [searchMode, setSearchMode] = useState<SearchMode>('recursive');
   const [copiedState, setCopiedState] = useState<string | null>(null);
-  const [previewImage, setPreviewImage] = useState<{path: string, name: string} | null>(null);
+  const [previewFile, setPreviewFile] = useState<{path: string, name: string, type: PreviewType} | null>(null);
+  const [displayMode, setDisplayMode] = useState<DisplayMode>('grid');
+  const [extensionFilter, setExtensionFilter] = useState<string>('');
   const resolveAssetUrl = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath}`.replace(/\/{2,}/g, '/').replace(':/', '://');
 
   useEffect(() => {
@@ -146,6 +155,8 @@ export const AssetExplorer: React.FC = () => {
       setViewMode('all');
       setSortMode('name');
       setSearchMode('recursive');
+      setExtensionFilter('');
+      setDisplayMode('grid');
   };
 
   const copyToClipboard = (text: string, id: string, e: React.MouseEvent) => {
@@ -159,7 +170,7 @@ export const AssetExplorer: React.FC = () => {
   // Handle ESC key to close preview
   useEffect(() => {
       const handleEsc = (e: KeyboardEvent) => {
-          if (e.key === 'Escape') setPreviewImage(null);
+          if (e.key === 'Escape') setPreviewFile(null);
       };
       window.addEventListener('keydown', handleEsc);
       return () => window.removeEventListener('keydown', handleEsc);
@@ -187,6 +198,10 @@ export const AssetExplorer: React.FC = () => {
           if (viewMode === 'folders') return item.type === 'directory';
           if (viewMode === 'images') return item.type === 'file' && isImageFile(item.name);
           if (viewMode === 'files') return item.type === 'file';
+          if (extensionFilter && item.type === 'file') {
+              const ext = item.name.split('.').pop()?.toLowerCase() || '';
+              return ext === extensionFilter.toLowerCase();
+          }
           return true;
       });
 
@@ -352,6 +367,41 @@ export const AssetExplorer: React.FC = () => {
           </label>
         </div>
 
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Filter className="absolute left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Extensão..."
+              value={extensionFilter}
+              onChange={(e) => setExtensionFilter(e.target.value)}
+              className="w-full rounded-xl border border-zinc-800 bg-zinc-950/70 py-2 pl-8 pr-2 text-xs text-zinc-200 placeholder-zinc-600 focus:border-red-500/50 focus:outline-none"
+            />
+          </div>
+          <div className="flex rounded-xl border border-zinc-800 bg-zinc-950/70 p-1">
+            <button
+              onClick={() => setDisplayMode('grid')}
+              className={cn(
+                "p-2 rounded-lg transition-colors",
+                displayMode === 'grid' ? "bg-red-500 text-white" : "text-zinc-400 hover:text-white"
+              )}
+              title="Grade"
+            >
+              <Grid3X3 className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setDisplayMode('list')}
+              className={cn(
+                "p-2 rounded-lg transition-colors",
+                displayMode === 'list' ? "bg-red-500 text-white" : "text-zinc-400 hover:text-white"
+              )}
+              title="Lista"
+            >
+              <List className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between gap-4 rounded-xl border border-zinc-800 bg-zinc-950/70 px-4 py-2 text-xs text-zinc-400 lg:justify-end">
           <span>{folderCount} pastas</span>
           <span>{fileCount} arquivos</span>
@@ -389,7 +439,7 @@ export const AssetExplorer: React.FC = () => {
         useWindowScroll
         totalCount={visibleItems.length}
         overscan={200}
-        listClassName="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4 mb-8"
+        listClassName={cn("gap-4 mb-8", displayMode === 'grid' ? "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8" : "grid grid-cols-1 max-w-4xl mx-auto")}
         itemContent={(index: number) => {
             const item = visibleItems[index];
             if (!item) return null; // Guard against potential out of bounds, though unlikely with totalCount
@@ -398,20 +448,23 @@ export const AssetExplorer: React.FC = () => {
                 return (
                     <div
                         onClick={() => navigateToPath(item.fullPath)}
-                        className="group cursor-pointer p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 hover:border-red-500/50 transition-all flex flex-col items-center justify-center text-center gap-3 relative select-none h-full"
+                        className={cn(
+                            "group cursor-pointer bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 hover:border-red-500/50 transition-all relative select-none",
+                            displayMode === 'grid' ? "p-4 flex flex-col items-center justify-center text-center gap-3 h-full" : "p-4 flex items-center gap-4"
+                        )}
                         style={{ paddingLeft: `${16 + item.depth * 14}px`, paddingRight: '16px' }}
                     >
-                        <div className="text-red-500/80 group-hover:text-red-400 transition-colors">
-                        <Folder className="w-10 h-10" />
+                        <div className="text-red-500/80 group-hover:text-red-400 transition-colors flex-shrink-0">
+                        <Folder className={displayMode === 'grid' ? "w-10 h-10" : "w-8 h-8"} />
                         </div>
-                        <span className="font-medium truncate w-full text-sm text-zinc-300 group-hover:text-white">{item.name}</span>
-                        <div className="flex flex-col items-center gap-0.5">
+                        <div className={cn("flex flex-col gap-0.5 min-w-0", displayMode === 'grid' ? "items-center" : "flex-1")}>
+                            <span className="font-medium truncate text-sm text-zinc-300 group-hover:text-white">{item.name}</span>
                             <span className="text-xs text-zinc-500">{item.children?.length || 0} itens</span>
                             <span className="text-[10px] text-zinc-600 font-mono bg-zinc-800/50 px-1.5 py-0.5 rounded">
                                 {formatFileSize(calculateFolderSize(item))}
                             </span>
                             {searchQuery && (
-                                <span className="text-[10px] text-zinc-500 font-mono truncate w-full">
+                                <span className="text-[10px] text-zinc-500 font-mono truncate">
                                     {item.path}
                                 </span>
                             )}
@@ -422,73 +475,103 @@ export const AssetExplorer: React.FC = () => {
 
             // File Item
             const file = item;
-            const isImage = /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
+            const isImage = isImageFile(file.name);
             const isText = isTextFile(file.name);
-            const isMedia = isMediaFile(file.name);
+            const isAudio = isAudioFile(file.name);
+            const isVideo = isVideoFile(file.name);
             const copyNameId = `name-${file.path}`;
             const copyPathId = `path-${file.path}`;
 
             return (
-                <div
-                    className="group relative p-3 bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 hover:border-zinc-700 transition-all flex flex-col items-center gap-3 h-[280px] overflow-hidden"
-                    style={{ paddingLeft: `${12 + item.depth * 14}px`, paddingRight: '12px' }}
+                <div className={cn(
+                    "group relative bg-zinc-900 border border-zinc-800 rounded-xl hover:bg-zinc-800 hover:border-zinc-700 transition-all overflow-hidden",
+                    displayMode === 'grid' ? "flex flex-col items-center gap-3 h-[280px] p-3" : "flex items-center gap-4 p-4"
+                )}
+                style={{ paddingLeft: `${12 + item.depth * 14}px`, paddingRight: '12px' }}
                 >
                     {isImage ? (
                         <div
-                            className="w-full h-[170px] bg-zinc-950 rounded-lg overflow-hidden flex items-center justify-center border border-zinc-800/50 cursor-pointer relative flex-shrink-0"
-                            onClick={() => setPreviewImage({path: file.path, name: file.name})}
+                            className={cn(
+                                "bg-zinc-950 rounded-lg overflow-hidden flex items-center justify-center border border-zinc-800/50 cursor-pointer relative flex-shrink-0",
+                                displayMode === 'grid' ? "w-full h-[170px]" : "w-16 h-16"
+                            )}
+                            onClick={() => setPreviewFile({path: file.path, name: file.name, type: 'image'})}
                         >
                             <img
                                 src={resolveAssetUrl(file.path)}
                                 alt={file.name}
                                 loading="lazy"
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                className={cn("object-cover group-hover:scale-105 transition-transform duration-300", displayMode === 'grid' ? "w-full h-full" : "w-full h-full")}
                             />
                             <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <Maximize2 className="text-white w-6 h-6 drop-shadow-md" />
                             </div>
                         </div>
-                    ) : isMedia ? (
-                        <div className="w-full h-[170px] bg-zinc-950 rounded-lg flex flex-col items-center justify-center gap-3 text-zinc-700 border border-zinc-800/50 flex-shrink-0 p-4">
-                            <Music className="w-10 h-10 text-purple-400" />
-                            <audio controls className="w-full h-8">
-                                <source src={resolveAssetUrl(file.path)} />
-                            </audio>
+                    ) : isVideo ? (
+                        <div
+                            className={cn(
+                                "bg-zinc-950 rounded-lg overflow-hidden flex items-center justify-center border border-zinc-800/50 cursor-pointer relative flex-shrink-0",
+                                displayMode === 'grid' ? "w-full h-[170px]" : "w-16 h-16"
+                            )}
+                            onClick={() => setPreviewFile({path: file.path, name: file.name, type: 'video'})}
+                        >
+                            <video
+                                src={resolveAssetUrl(file.path)}
+                                className={cn("object-cover", displayMode === 'grid' ? "w-full h-full" : "w-full h-full")}
+                                preload="metadata"
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <Play className="text-white w-8 h-8 drop-shadow-md" />
+                            </div>
                         </div>
-                    ) : (
+                    ) : isAudio ? (
+                        <div className={cn(
+                            "bg-zinc-950 rounded-lg flex items-center justify-center border border-zinc-800/50 flex-shrink-0",
+                            displayMode === 'grid' ? "w-full h-[170px] flex-col gap-3 p-4" : "w-16 h-16"
+                        )}>
+                            <Music className={cn("text-purple-400", displayMode === 'grid' ? "w-10 h-10" : "w-8 h-8")} />
+                            {displayMode === 'grid' && (
+                                <audio controls className="w-full h-8">
+                                    <source src={resolveAssetUrl(file.path)} />
+                                </audio>
+                            )}
+                        </div>
+                    ) : displayMode === 'grid' ? (
                         <div className="w-full h-[170px] bg-zinc-950 rounded-lg flex items-center justify-center text-zinc-700 border border-zinc-800/50 flex-shrink-0">
                             <FileText className="w-10 h-10" />
                         </div>
+                    ) : (
+                        <div className="w-16 h-16 bg-zinc-950 rounded-lg flex items-center justify-center text-zinc-700 border border-zinc-800/50 flex-shrink-0">
+                            <FileText className="w-8 h-8" />
+                        </div>
                     )}
 
-                    <div className="w-full flex flex-col items-center gap-1 mt-auto min-h-0">
-                        <span className="text-xs font-medium truncate flex-1 text-center text-zinc-400 group-hover:text-zinc-200" title={file.name}>
+                    <div className={cn("flex flex-col gap-1 min-h-0", displayMode === 'grid' ? "items-center mt-auto w-full" : "flex-1")}>
+                        <span className={cn("font-medium truncate text-zinc-400 group-hover:text-zinc-200", displayMode === 'grid' ? "text-xs text-center flex-1" : "text-sm")} title={file.name}>
                             {file.name}
                         </span>
-                        {searchQuery && (
-                            <span className="text-[10px] text-zinc-500 font-mono truncate w-full text-center" title={file.path}>
+                        {(searchQuery || displayMode === 'list') && (
+                            <span className="text-[10px] text-zinc-500 font-mono truncate" title={file.path}>
                                 {file.path}
                             </span>
                         )}
-                        {file.size && (
-                            <span className="text-[10px] text-zinc-500 font-mono bg-zinc-800/50 px-1.5 py-0.5 rounded">
-                                {formatFileSize(file.size)}
-                            </span>
-                        )}
+                        <span className="text-[10px] text-zinc-500 font-mono bg-zinc-800/50 px-1.5 py-0.5 rounded">
+                            {formatFileSize(file.size || 0)}
+                        </span>
                     </div>
 
                     {/* Hover Actions */}
-                    <div className="absolute top-2 right-2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                        {(isText || isMedia) && (
+                    <div className={cn("flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10", displayMode === 'list' ? "absolute right-2 top-2 flex-col" : "absolute top-2 right-2 flex-col")}>
+                        {(isText || isAudio || isVideo) && (
                             <a
                                 href={resolveAssetUrl(file.path)}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="bg-black/80 hover:bg-red-600 text-white p-1.5 rounded-md shadow-lg backdrop-blur-sm transition-colors flex items-center justify-center"
-                                title={isMedia ? "Abrir stream" : "Abrir arquivo"}
+                                title={isVideo || isAudio ? "Abrir" : "Abrir arquivo"}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                {isMedia ? <Play className="w-3.5 h-3.5" /> : <FileText className="w-3.5 h-3.5" />}
+                                {(isAudio || isVideo) ? <Play className="w-3.5 h-3.5" /> : <FileText className="w-3.5 h-3.5" />}
                             </a>
                         )}
                         <button
@@ -528,15 +611,15 @@ export const AssetExplorer: React.FC = () => {
       )}
 
 
-      {/* Image Preview Modal */}
-      {previewImage && (
+      {/* Preview Modal */}
+      {previewFile && (
         <div
             className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
-            onClick={() => setPreviewImage(null)}
+            onClick={() => setPreviewFile(null)}
         >
             <button
-                className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors"
-                onClick={() => setPreviewImage(null)}
+                className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors z-10"
+                onClick={() => setPreviewFile(null)}
             >
                 <X className="w-8 h-8" />
             </button>
@@ -544,13 +627,30 @@ export const AssetExplorer: React.FC = () => {
                 className="max-w-full max-h-full relative"
                 onClick={(e) => e.stopPropagation()}
             >
-                <img
-                    src={resolveAssetUrl(previewImage.path)}
-                    alt={previewImage.name}
-                    className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
-                />
+                {previewFile.type === 'video' ? (
+                    <video
+                        src={resolveAssetUrl(previewFile.path)}
+                        controls
+                        autoPlay
+                        className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl"
+                    />
+                ) : previewFile.type === 'audio' ? (
+                    <div className="bg-zinc-900 p-8 rounded-2xl shadow-2xl flex flex-col items-center gap-4">
+                        <Music className="w-16 h-16 text-purple-400" />
+                        <audio controls autoPlay className="w-[300px]">
+                            <source src={resolveAssetUrl(previewFile.path)} />
+                        </audio>
+                        <span className="text-zinc-400 text-sm">{previewFile.name}</span>
+                    </div>
+                ) : (
+                    <img
+                        src={resolveAssetUrl(previewFile.path)}
+                        alt={previewFile.name}
+                        className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl"
+                    />
+                )}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-md border border-white/10">
-                    {previewImage.name}
+                    {previewFile.name}
                 </div>
             </div>
         </div>
