@@ -20,7 +20,11 @@ import {
     Play,
     List,
     Grid3X3,
-    Filter
+    Filter,
+    Clock,
+    BarChart3,
+    Square,
+    CheckSquare
 } from 'lucide-react';
 
 
@@ -66,10 +70,19 @@ interface VisibleAssetNode extends AssetNode {
 }
 
 type ViewMode = 'all' | 'folders' | 'images' | 'files';
-type SortMode = 'name' | 'size' | 'type';
+type SortMode = 'name' | 'size' | 'type' | 'date';
 type SearchMode = 'current' | 'recursive';
 type DisplayMode = 'grid' | 'list';
 type PreviewType = 'image' | 'video' | 'audio' | null;
+
+interface FileStats {
+    images: number;
+    videos: number;
+    audios: number;
+    files: number;
+    folders: number;
+    totalSize: number;
+}
 
 const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
 const TEXT_EXTENSIONS = /\.(json|txt|csv|md|xml|yml|yaml|log|ini|toml)$/i;
@@ -101,6 +114,8 @@ export const AssetExplorer: React.FC = () => {
   const [previewFile, setPreviewFile] = useState<{path: string, name: string, type: PreviewType} | null>(null);
   const [displayMode, setDisplayMode] = useState<DisplayMode>('grid');
   const [extensionFilter, setExtensionFilter] = useState<string>('');
+  const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
   const resolveAssetUrl = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath}`.replace(/\/{2,}/g, '/').replace(':/', '://');
 
   useEffect(() => {
@@ -167,14 +182,53 @@ export const AssetExplorer: React.FC = () => {
       });
   }
 
-  // Handle ESC key to close preview
+  // Handle keyboard shortcuts
   useEffect(() => {
-      const handleEsc = (e: KeyboardEvent) => {
-          if (e.key === 'Escape') setPreviewFile(null);
+      const handleKeyDown = (e: KeyboardEvent) => {
+          if (e.key === 'Escape') {
+              if (previewFile) {
+                  setPreviewFile(null);
+              } else if (isSelectionMode) {
+                  setIsSelectionMode(false);
+                  setSelectedFiles(new Set());
+              }
+              return;
+          }
+
+          if (isSelectionMode) {
+              if (e.key === 'a' && (e.ctrlKey || e.metaKey)) {
+                  e.preventDefault();
+                  const allPaths = visibleItems.filter(i => i.type === 'file').map(i => i.path);
+                  setSelectedFiles(new Set(allPaths));
+              }
+              if (e.key === 'Escape') {
+                  setIsSelectionMode(false);
+                  setSelectedFiles(new Set());
+              }
+              return;
+          }
+
+          if (e.key === ' ' || e.key === 's') {
+              e.preventDefault();
+              setIsSelectionMode(true);
+              return;
+          }
+
+          if (e.key === 'Backspace') {
+              e.preventDefault();
+              if (currentPath.length > 0) {
+                  navigateToPath(currentPath.slice(0, -1));
+              }
+              return;
+          }
+
+          if (e.key === 'ArrowRight' && currentPath.length > 0) {
+              e.preventDefault();
+          }
       };
-      window.addEventListener('keydown', handleEsc);
-      return () => window.removeEventListener('keydown', handleEsc);
-  }, []);
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [previewFile, isSelectionMode, currentPath, visibleItems]);
 
   if (!manifest) return <div className="min-h-screen flex items-center justify-center text-zinc-400">Carregando arquivos...</div>;
   if (!currentNode) return <div className="min-h-screen flex items-center justify-center text-zinc-400">Iniciando...</div>;
@@ -207,6 +261,11 @@ export const AssetExplorer: React.FC = () => {
 
       const sortItems = (items: VisibleAssetNode[]) => {
           return [...items].sort((a, b) => {
+              if (sortMode === 'date') {
+                  if (a.type !== b.type) return a.type === 'directory' ? -1 : 1;
+                  return a.name.localeCompare(b.name);
+              }
+
               if (sortMode === 'size') {
                   const diff = calculateFolderSize(b) - calculateFolderSize(a);
                   if (diff !== 0) return diff;
@@ -363,6 +422,7 @@ export const AssetExplorer: React.FC = () => {
               <option value="name">Nome</option>
               <option value="size">Tamanho</option>
               <option value="type">Tipo</option>
+              <option value="date">Data</option>
             </select>
           </label>
         </div>
