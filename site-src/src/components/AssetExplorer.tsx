@@ -21,10 +21,6 @@ import {
     List,
     Grid3X3,
     Filter,
-    Clock,
-    BarChart3,
-    Square,
-    CheckSquare
 } from 'lucide-react';
 
 
@@ -75,14 +71,14 @@ type SearchMode = 'current' | 'recursive';
 type DisplayMode = 'grid' | 'list';
 type PreviewType = 'image' | 'video' | 'audio' | null;
 
-interface FileStats {
-    images: number;
-    videos: number;
-    audios: number;
-    files: number;
-    folders: number;
-    totalSize: number;
-}
+// interface FileStats {
+//     images: number;
+//     videos: number;
+//     audios: number;
+//     files: number;
+//     folders: number;
+//     totalSize: number;
+// }
 
 const IMAGE_EXTENSIONS = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
 const TEXT_EXTENSIONS = /\.(json|txt|csv|md|xml|yml|yaml|log|ini|toml)$/i;
@@ -114,7 +110,7 @@ export const AssetExplorer: React.FC = () => {
   const [previewFile, setPreviewFile] = useState<{path: string, name: string, type: PreviewType} | null>(null);
   const [displayMode, setDisplayMode] = useState<DisplayMode>('grid');
   const [extensionFilter, setExtensionFilter] = useState<string>('');
-  const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
+  const [_selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
   const [isSelectionMode, setIsSelectionMode] = useState(false);
   const resolveAssetUrl = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath}`.replace(/\/{2,}/g, '/').replace(':/', '://');
 
@@ -228,7 +224,7 @@ export const AssetExplorer: React.FC = () => {
       };
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [previewFile, isSelectionMode, currentPath, visibleItems]);
+  }, [previewFile, isSelectionMode, currentPath]);
 
   if (!manifest) return <div className="min-h-screen flex items-center justify-center text-zinc-400">Carregando arquivos...</div>;
   if (!currentNode) return <div className="min-h-screen flex items-center justify-center text-zinc-400">Iniciando...</div>;
