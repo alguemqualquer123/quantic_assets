@@ -143348,6 +143348,18 @@
               "size": 825
             },
             {
+              "name": "InstaFlow_Icon.png",
+              "path": "images/icons/InstaFlow_Icon.png",
+              "type": "file",
+              "size": 353655
+            },
+            {
+              "name": "InstaFlow_Logo.png",
+              "path": "images/icons/InstaFlow_Logo.png",
+              "type": "file",
+              "size": 329892
+            },
+            {
               "name": "instagram.png",
               "path": "images/icons/instagram.png",
               "type": "file",
@@ -146254,6 +146266,31 @@
               "path": "images/img/sound.gif",
               "type": "file",
               "size": 777279
+            }
+          ]
+        },
+        {
+          "name": "instaflow",
+          "path": "images/instaflow",
+          "type": "directory",
+          "children": [
+            {
+              "name": "avatar-placeholder-light.svg",
+              "path": "images/instaflow/avatar-placeholder-light.svg",
+              "type": "file",
+              "size": 897
+            },
+            {
+              "name": "StoryCircle.svg",
+              "path": "images/instaflow/StoryCircle.svg",
+              "type": "file",
+              "size": 462
+            },
+            {
+              "name": "Verified.svg",
+              "path": "images/instaflow/Verified.svg",
+              "type": "file",
+              "size": 546
             }
           ]
         },
@@ -173398,5 +173435,5 @@
       "size": 26
     }
   ],
-  "generated_at": 1780973468.3106098
+  "generated_at": 1781614948.5591934
 }
