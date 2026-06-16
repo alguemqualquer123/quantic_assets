@@ -146582,6 +146582,139 @@
               ]
             },
             {
+              "name": "sounds-pt",
+              "path": "images/sounds/sounds-pt",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "call_already_in_call.wav",
+                  "path": "images/sounds/sounds-pt/call_already_in_call.wav",
+                  "type": "file",
+                  "size": 313004
+                },
+                {
+                  "name": "call_already_in_call_duplicate.wav",
+                  "path": "images/sounds/sounds-pt/call_already_in_call_duplicate.wav",
+                  "type": "file",
+                  "size": 224684
+                },
+                {
+                  "name": "call_connection_error.wav",
+                  "path": "images/sounds/sounds-pt/call_connection_error.wav",
+                  "type": "file",
+                  "size": 195884
+                },
+                {
+                  "name": "call_device_offline.wav",
+                  "path": "images/sounds/sounds-pt/call_device_offline.wav",
+                  "type": "file",
+                  "size": 222764
+                },
+                {
+                  "name": "call_disconnected.wav",
+                  "path": "images/sounds/sounds-pt/call_disconnected.wav",
+                  "type": "file",
+                  "size": 213164
+                },
+                {
+                  "name": "call_ended.wav",
+                  "path": "images/sounds/sounds-pt/call_ended.wav",
+                  "type": "file",
+                  "size": 119084
+                },
+                {
+                  "name": "call_failed.wav",
+                  "path": "images/sounds/sounds-pt/call_failed.wav",
+                  "type": "file",
+                  "size": 176684
+                },
+                {
+                  "name": "call_feature_unavailable.wav",
+                  "path": "images/sounds/sounds-pt/call_feature_unavailable.wav",
+                  "type": "file",
+                  "size": 215084
+                },
+                {
+                  "name": "call_invalid_number.wav",
+                  "path": "images/sounds/sounds-pt/call_invalid_number.wav",
+                  "type": "file",
+                  "size": 190124
+                },
+                {
+                  "name": "call_mailbox_full.wav",
+                  "path": "images/sounds/sounds-pt/call_mailbox_full.wav",
+                  "type": "file",
+                  "size": 213164
+                },
+                {
+                  "name": "call_network_unavailable.wav",
+                  "path": "images/sounds/sounds-pt/call_network_unavailable.wav",
+                  "type": "file",
+                  "size": 199724
+                },
+                {
+                  "name": "call_no_signal.wav",
+                  "path": "images/sounds/sounds-pt/call_no_signal.wav",
+                  "type": "file",
+                  "size": 224684
+                },
+                {
+                  "name": "call_not_answered.wav",
+                  "path": "images/sounds/sounds-pt/call_not_answered.wav",
+                  "type": "file",
+                  "size": 153644
+                },
+                {
+                  "name": "call_reconnected.wav",
+                  "path": "images/sounds/sounds-pt/call_reconnected.wav",
+                  "type": "file",
+                  "size": 138284
+                },
+                {
+                  "name": "call_reconnecting.wav",
+                  "path": "images/sounds/sounds-pt/call_reconnecting.wav",
+                  "type": "file",
+                  "size": 155564
+                },
+                {
+                  "name": "call_rejected.wav",
+                  "path": "images/sounds/sounds-pt/call_rejected.wav",
+                  "type": "file",
+                  "size": 121004
+                },
+                {
+                  "name": "call_unavailable.wav",
+                  "path": "images/sounds/sounds-pt/call_unavailable.wav",
+                  "type": "file",
+                  "size": 184364
+                },
+                {
+                  "name": "call_user_not_registered.wav",
+                  "path": "images/sounds/sounds-pt/call_user_not_registered.wav",
+                  "type": "file",
+                  "size": 207404
+                },
+                {
+                  "name": "call_user_offline.wav",
+                  "path": "images/sounds/sounds-pt/call_user_offline.wav",
+                  "type": "file",
+                  "size": 174764
+                },
+                {
+                  "name": "call_video_unavailable.wav",
+                  "path": "images/sounds/sounds-pt/call_video_unavailable.wav",
+                  "type": "file",
+                  "size": 228524
+                },
+                {
+                  "name": "call_voicemail.wav",
+                  "path": "images/sounds/sounds-pt/call_voicemail.wav",
+                  "type": "file",
+                  "size": 299564
+                }
+              ]
+            },
+            {
               "name": "toques",
               "path": "images/sounds/toques",
               "type": "directory",
@@ -173265,5 +173398,5 @@
       "size": 26
     }
   ],
-  "generated_at": 1779051132.7093585
+  "generated_at": 1780973468.3106098
 }
