@@ -143351,7 +143351,7 @@
               "name": "InstaFlow_Icon.png",
               "path": "images/icons/InstaFlow_Icon.png",
               "type": "file",
-              "size": 353655
+              "size": 337596
             },
             {
               "name": "InstaFlow_Logo.png",
@@ -173435,5 +173435,5 @@
       "size": 26
     }
   ],
-  "generated_at": 1781614948.5591934
+  "generated_at": 1781617194.0811563
 }
