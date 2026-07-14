@@ -140738,6 +140738,39 @@
       "type": "directory",
       "children": [
         {
+          "name": "apps",
+          "path": "images/apps",
+          "type": "directory",
+          "children": [
+            {
+              "name": "crypto",
+              "path": "images/apps/crypto",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "cryptoicon.webp",
+                  "path": "images/apps/crypto/cryptoicon.webp",
+                  "type": "file",
+                  "size": 397306
+                }
+              ]
+            },
+            {
+              "name": "darkchat",
+              "path": "images/apps/darkchat",
+              "type": "directory",
+              "children": [
+                {
+                  "name": "darkicon.webp",
+                  "path": "images/apps/darkchat/darkicon.webp",
+                  "type": "file",
+                  "size": 9900
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "backgrounds",
           "path": "images/backgrounds",
           "type": "directory",
@@ -143214,6 +143247,12 @@
               "path": "images/icons/contacts.webp",
               "type": "file",
               "size": 2704
+            },
+            {
+              "name": "crypto.png",
+              "path": "images/icons/crypto.png",
+              "type": "file",
+              "size": 3181969
             },
             {
               "name": "cursor_icon.png",
@@ -146967,6 +147006,30 @@
           ]
         },
         {
+          "name": "2e009d232cceefc4be4a1d26b76f9b99.webp",
+          "path": "images/2e009d232cceefc4be4a1d26b76f9b99.webp",
+          "type": "file",
+          "size": 39752
+        },
+        {
+          "name": "96x96_vinix.webp",
+          "path": "images/96x96_vinix.webp",
+          "type": "file",
+          "size": 192958
+        },
+        {
+          "name": "AppleFaceID.svg",
+          "path": "images/AppleFaceID.svg",
+          "type": "file",
+          "size": 78588
+        },
+        {
+          "name": "avatar-placeholder-light.svg",
+          "path": "images/avatar-placeholder-light.svg",
+          "type": "file",
+          "size": 897
+        },
+        {
           "name": "dark.png",
           "path": "images/dark.png",
           "type": "file",
@@ -146979,6 +147042,24 @@
           "size": 7182
         },
         {
+          "name": "FaceID.svg",
+          "path": "images/FaceID.svg",
+          "type": "file",
+          "size": 18663
+        },
+        {
+          "name": "fallback.webp",
+          "path": "images/fallback.webp",
+          "type": "file",
+          "size": 11894
+        },
+        {
+          "name": "fenix_png.webp",
+          "path": "images/fenix_png.webp",
+          "type": "file",
+          "size": 8772
+        },
+        {
           "name": "light.png",
           "path": "images/light.png",
           "type": "file",
@@ -146989,6 +147070,12 @@
           "path": "images/light.webp",
           "type": "file",
           "size": 8700
+        },
+        {
+          "name": "lock.svg",
+          "path": "images/lock.svg",
+          "type": "file",
+          "size": 4687
         },
         {
           "name": "logo.png",
@@ -173435,5 +173522,5 @@
       "size": 26
     }
   ],
-  "generated_at": 1781617194.0811563
+  "generated_at": 1783999070.0460823
 }
