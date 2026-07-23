@@ -1,0 +1,11 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="120" rx="26" fill="#0f172a"/>
+  <line x1="44" y1="32" x2="44" y2="88" stroke="#1e293b" stroke-width="2"/>
+  <line x1="76" y1="32" x2="76" y2="88" stroke="#1e293b" stroke-width="2"/>
+  <line x1="28" y1="50" x2="92" y2="50" stroke="#1e293b" stroke-width="2"/>
+  <line x1="28" y1="72" x2="92" y2="72" stroke="#1e293b" stroke-width="2"/>
+  <text x="40" y="49" font-family="-apple-system, sans-serif" font-size="24" font-weight="800" fill="#38bdf8" text-anchor="middle">X</text>
+  <text x="72" y="49" font-family="-apple-system, sans-serif" font-size="24" font-weight="800" fill="#fb7185" text-anchor="middle">O</text>
+  <text x="40" y="71" font-family="-apple-system, sans-serif" font-size="24" font-weight="800" fill="#fb7185" text-anchor="middle">O</text>
+  <text x="72" y="71" font-family="-apple-system, sans-serif" font-size="24" font-weight="800" fill="#38bdf8" text-anchor="middle">X</text>
+</svg>
