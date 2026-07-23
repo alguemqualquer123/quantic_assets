@@ -140782,12 +140782,6 @@
               ]
             },
             {
-              "name": "appstore",
-              "path": "images/apps/appstore",
-              "type": "directory",
-              "children": []
-            },
-            {
               "name": "camera",
               "path": "images/apps/camera",
               "type": "directory",
@@ -143354,12 +143348,6 @@
           ]
         },
         {
-          "name": "game",
-          "path": "images/game",
-          "type": "directory",
-          "children": []
-        },
-        {
           "name": "icons",
           "path": "images/icons",
           "type": "directory",
@@ -143422,7 +143410,7 @@
               "name": "batery.svg",
               "path": "images/icons/batery.svg",
               "type": "file",
-              "size": 1123
+              "size": 1077
             },
             {
               "name": "battery.svg",
@@ -144010,7 +143998,7 @@
               "name": "sendMessageWt.svg",
               "path": "images/icons/sendMessageWt.svg",
               "type": "file",
-              "size": 726
+              "size": 723
             },
             {
               "name": "settings.png",
@@ -144052,25 +144040,25 @@
               "name": "sinal0.svg",
               "path": "images/icons/sinal0.svg",
               "type": "file",
-              "size": 1355
+              "size": 1339
             },
             {
               "name": "sinal1.svg",
               "path": "images/icons/sinal1.svg",
               "type": "file",
-              "size": 1355
+              "size": 1339
             },
             {
               "name": "sinal2.svg",
               "path": "images/icons/sinal2.svg",
               "type": "file",
-              "size": 1355
+              "size": 1339
             },
             {
               "name": "sinal3.svg",
               "path": "images/icons/sinal3.svg",
               "type": "file",
-              "size": 1273
+              "size": 1258
             },
             {
               "name": "speaker-2.svg",
@@ -144311,7 +144299,7 @@
               "name": "geral.svg",
               "path": "images/iconsSettings/geral.svg",
               "type": "file",
-              "size": 9866
+              "size": 9857
             }
           ]
         },
@@ -146637,13 +146625,13 @@
               "name": "avatar-placeholder-light.svg",
               "path": "images/instaflow/avatar-placeholder-light.svg",
               "type": "file",
-              "size": 901
+              "size": 897
             },
             {
               "name": "StoryCircle.svg",
               "path": "images/instaflow/StoryCircle.svg",
               "type": "file",
-              "size": 472
+              "size": 462
             },
             {
               "name": "Verified.svg",
@@ -146976,12 +146964,6 @@
                   "size": 13387
                 }
               ]
-            },
-            {
-              "name": "sounds-en",
-              "path": "images/sounds/sounds-en",
-              "type": "directory",
-              "children": []
             },
             {
               "name": "sounds-pt",
@@ -147480,7 +147462,7 @@
           "name": "avatar-placeholder-light.svg",
           "path": "images/avatar-placeholder-light.svg",
           "type": "file",
-          "size": 901
+          "size": 897
         },
         {
           "name": "dark.png",
@@ -147528,7 +147510,7 @@
           "name": "lock.svg",
           "path": "images/lock.svg",
           "type": "file",
-          "size": 4756
+          "size": 4687
         },
         {
           "name": "logo.png",
@@ -173972,8 +173954,8 @@
       "name": ".gitignore",
       "path": ".gitignore",
       "type": "file",
-      "size": 27
+      "size": 26
     }
   ],
-  "generated_at": 1783996823.3080184
+  "generated_at": 1784772720.4033604
 }
